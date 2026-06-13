@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TROOPBOX AI — 122 Free AI Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─────────────────────────────────────────── */
+:root {
+  --bg:        #050508;
+  --bg2:       #0a0a10;
+  --glass:     rgba(255,255,255,0.04);
+  --glass2:    rgba(255,255,255,0.07);
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.14);
+  --text:      #eeeef5;
+  --muted:     #6b6b80;
+  --dim:       #2e2e3a;
+
+  /* neon accents */
+  --cyan:   #00f5d4;
+  --violet: #8b5cf6;
+  --pink:   #f472b6;
+  --amber:  #fbbf24;
+  --green:  #4ade80;
+  --blue:   #38bdf8;
+  --orange: #fb923c;
+  --rose:   #f43f5e;
+
+  /* category palette */
+  --c-webchat:    #00f5d4;
+  --c-localchat:  #38bdf8;
+  --c-images:     #f472b6;
+  --c-audio:      #fbbf24;
+  --c-coding:     #4ade80;
+  --c-utility:    #fb923c;
+  --c-pres:       #c084fc;
+  --c-resume:     #34d399;
+  --c-ats:        #f59e0b;
+  --c-website:    #60a5fa;
+
+  --radius: 18px;
+  --radius-sm: 12px;
+}
+
+/* ─── RESET ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Cabinet Grotesk', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ─── AMBIENT ORBS ────────────────────────────────────── */
+.orb {
+  position: fixed; border-radius: 50%;
+  filter: blur(100px); pointer-events: none; z-index: 0;
+  animation: orbFloat 12s ease-in-out infinite alternate;
+}
+.orb-1 { width:700px;height:700px;background:radial-gradient(circle,#8b5cf615,transparent 65%);top:-250px;left:-200px;animation-delay:0s; }
+.orb-2 { width:500px;height:500px;background:radial-gradient(circle,#00f5d412,transparent 65%);bottom:-100px;right:-150px;animation-delay:-4s; }
+.orb-3 { width:400px;height:400px;background:radial-gradient(circle,#f472b60a,transparent 65%);top:40%;left:40%;animation-delay:-8s; }
+@keyframes orbFloat { from{transform:translate(0,0) scale(1);} to{transform:translate(40px,30px) scale(1.08);} }
+
+/* ─── NOISE ──────────────────────────────────────────── */
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.25;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(5,5,8,0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 64px;
+  display: flex; align-items: center; gap: 16px;
+}
+
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+.logo-mark {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--violet), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 0 20px rgba(139,92,246,0.5);
+  position: relative;
+}
+.logo-mark::after {
+  content:'';position:absolute;inset:-2px;border-radius:12px;
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  z-index:-1; opacity:.4; filter:blur(6px);
+}
+.logo-text span { color: var(--cyan); }
+
+/* Search */
+.search-wrap {
+  flex: 1; max-width: 480px; position: relative;
+}
+.search-inner {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--glass2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 0 14px;
+  height: 40px;
+  transition: border-color .2s, box-shadow .2s;
+  cursor: text;
+}
+.search-inner:focus-within {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(139,92,246,.15);
+}
+.search-inner svg { color: var(--muted); flex-shrink:0; }
+#searchInput {
+  flex:1; background:none; border:none; outline:none;
+  color:var(--text); font-family:inherit; font-size:14px;
+}
+#searchInput::placeholder { color:var(--muted); }
+.kbd {
+  padding: 2px 7px; border-radius: 6px;
+  background: var(--dim); color: var(--muted);
+  font-size: 11px; font-weight: 500;
+  border: 1px solid rgba(255,255,255,.08);
+  white-space: nowrap; flex-shrink:0;
+}
+
+/* Header right */
+.header-right {
+  display: flex; align-items: center; gap: 10px; margin-left: auto;
+}
+.btn-ghost {
+  padding: 8px 16px; border-radius: 10px;
+  border: 1px solid var(--border2);
+  color: var(--muted); font-size: 13px; font-weight: 500;
+  transition: all .2s;
+  background: transparent;
+}
+.btn-ghost:hover { color:var(--text); border-color:var(--violet); background:rgba(139,92,246,.08); }
+.btn-primary {
+  padding: 8px 18px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--violet), #6d28d9);
+  color: #fff; font-size: 13px; font-weight: 600;
+  box-shadow: 0 4px 15px rgba(139,92,246,.3);
+  transition: all .2s;
+}
+.btn-primary:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(139,92,246,.45); }
+
+/* Hamburger - mobile only */
+.hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  padding: 8px; border-radius: 8px;
+  background: var(--glass2); border: 1px solid var(--border);
+  margin-left: auto;
+}
+.hamburger span {
+  display: block; width: 20px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: all .3s;
+}
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+/* ─── MOBILE NAV DRAWER ───────────────────────────────── */
+.mobile-drawer {
+  display: none;
+  position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
+  background: rgba(5,5,8,.97);
+  backdrop-filter: blur(20px);
+  z-index: 90;
+  padding: 24px 20px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.mobile-drawer.open { transform: translateX(0); }
+
+.drawer-title {
+  font-size: 12px; font-weight: 700; letter-spacing:.1em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.drawer-cats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 32px;
+}
+.drawer-cat {
+  padding: 16px; border-radius: var(--radius-sm);
+  background: var(--glass); border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 6px;
+  cursor: pointer; transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.drawer-cat::before {
+  content:''; position:absolute; inset:0;
+  background: var(--cat-color, var(--violet));
+  opacity:0; transition: opacity .25s;
+}
+.drawer-cat:hover::before, .drawer-cat.active::before { opacity:.08; }
+.drawer-cat.active { border-color: var(--cat-color, var(--violet)); }
+.drawer-cat-icon { font-size: 22px; }
+.drawer-cat-name { font-size: 13px; font-weight: 700; }
+.drawer-cat-count { font-size: 11px; color: var(--muted); }
+
+/* Mobile search in drawer */
+.drawer-search {
+  display:flex; align-items:center; gap:10px;
+  background:var(--glass2); border:1px solid var(--border2);
+  border-radius:12px; padding:0 14px; height:44px; margin-bottom:24px;
+}
+#mobileSearch {
+  flex:1; background:none; border:none; outline:none;
+  color:var(--text); font-family:inherit; font-size:15px;
+}
+#mobileSearch::placeholder { color:var(--muted); }
+
+/* ─── HERO ────────────────────────────────────────────── */
+.hero {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 80px 24px 56px;
+  max-width: 900px; margin: 0 auto;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(139,92,246,.1);
+  border: 1px solid rgba(139,92,246,.3);
+  color: var(--violet); font-size: 12px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 100px; margin-bottom: 28px;
+}
+.hero-badge-dot {
+  width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+
+h1 {
+  font-family:'Cabinet Grotesk', sans-serif;
+  font-size: clamp(42px, 7vw, 84px);
+  font-weight: 800; line-height: 1.02; letter-spacing: -0.04em;
+  margin-bottom: 20px;
+}
+.h1-line1 { display:block; color: var(--text); }
+.h1-line2 {
+  display:block;
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--violet) 50%, var(--pink) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+.hero-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--muted); font-weight: 400; line-height: 1.7;
+  max-width: 520px; margin: 0 auto 40px;
+}
+
+/* Stats bar */
+.stats {
+  display: flex; justify-content: center; gap: 0;
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0; overflow: hidden;
+  max-width: 480px; margin: 0 auto;
+}
+.stat {
+  flex: 1; padding: 20px 16px; text-align: center;
+  position: relative;
+}
+.stat + .stat::before {
+  content:''; position:absolute; left:0; top:20%; height:60%;
+  width:1px; background:var(--border);
+}
+.stat-n {
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size: 28px; font-weight: 800; display: block;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.stat-l { font-size: 11px; color: var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+
+/* ─── CATEGORY FILTER (Desktop) ──────────────────────── */
+.cat-bar {
+  position: sticky; top: 64px; z-index: 50;
+  background: rgba(5,5,8,.85); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.cat-scroll {
+  display: flex; gap: 6px; align-items: center;
+  overflow-x: auto; padding: 12px 0;
+  scrollbar-width: none;
+}
+.cat-scroll::-webkit-scrollbar { display: none; }
+
+.cat-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 100px;
+  font-size: 13px; font-weight: 500; white-space: nowrap;
+  border: 1px solid var(--border);
+  background: var(--glass); color: var(--muted);
+  transition: all .2s; cursor: pointer; flex-shrink:0;
+}
+.cat-chip .chip-dot {
+  width:7px;height:7px;border-radius:50%;
+  background:currentColor;opacity:.5;transition:opacity .2s;
+}
+.cat-chip:hover { color:var(--text); border-color:rgba(255,255,255,.2); }
+.cat-chip.active {
+  color:#fff; border-color:transparent;
+  box-shadow: 0 0 12px rgba(var(--chip-rgb,.5),0.4);
+}
+.cat-chip.active .chip-dot { opacity:1; }
+
+/* ─── RESULT INFO ─────────────────────────────────────── */
+.result-bar {
+  position: relative; z-index: 10;
+  padding: 16px 24px 0;
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+}
+.result-text { font-size: 13px; color: var(--muted); }
+.result-text strong { color: var(--text); }
+
+/* ─── BENTO GRID (Desktop) ──────────────────────────── */
+.grid-wrap {
+  position: relative; z-index: 10;
+  max-width: 1400px; margin: 0 auto;
+  padding: 20px 20px 80px;
+}
+
+/* Desktop: CSS Masonry/Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ─── TOOL CARD ───────────────────────────────────────── */
+.tool-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex; flex-direction: column; gap: 12px;
+  position: relative; overflow: hidden;
+  transition: transform .25s cubic-bezier(.34,1.2,.64,1), border-color .2s, box-shadow .2s;
+  cursor: pointer;
+  animation: cardIn .4s ease both;
+}
+@keyframes cardIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+.tool-card::before {
+  content:''; position:absolute; inset:0;
+  background:var(--card-accent-color,var(--violet));
+  opacity:0; transition: opacity .3s; border-radius:inherit;
+}
+.tool-card:hover { transform:translateY(-4px); }
+.tool-card:hover::before { opacity:.05; }
+
+/* Accent top line */
+.tool-card::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--card-accent-color,var(--violet)),transparent);
+  opacity:0; transition:opacity .3s;
+}
+.tool-card:hover::after { opacity:.8; }
+
+.card-head {
+  display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+}
+.card-icon-wrap {
+  width:44px;height:44px;border-radius:12px;
+  background:var(--card-accent-bg,rgba(139,92,246,.1));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.card-meta { text-align:right; }
+.card-num { font-size:10px;font-weight:700;color:var(--dim);letter-spacing:.06em;margin-bottom:3px; }
+.card-cat-badge {
+  font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--card-accent-color,var(--violet));
+  background:var(--card-accent-bg,rgba(139,92,246,.1));
+  padding:3px 9px;border-radius:100px;display:inline-block;
+}
+.card-name {
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:16px;font-weight:700;
+  color:var(--text); line-height:1.2;
+}
+.card-desc { font-size:13px;color:var(--muted);line-height:1.6;flex:1; }
+.card-link-row {
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;
+}
+.card-visit {
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:600;
+  color:var(--card-accent-color,var(--violet));
+  opacity:.8; transition:opacity .2s,gap .2s;
+}
+.tool-card:hover .card-visit { opacity:1;gap:7px; }
+
+/* ─── SKELETON LOADER ─────────────────────────────────── */
+.skeleton {
+  background:linear-gradient(90deg,var(--glass) 25%,var(--glass2) 50%,var(--glass) 75%);
+  background-size:200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* ─── MOBILE: CATEGORY BOXES ─────────────────────────── */
+.mobile-cat-grid {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 20px 16px 80px;
+  max-width: 600px; margin: 0 auto;
+}
+
+.mobile-cat-card {
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  padding: 22px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: all .25s cubic-bezier(.34,1.2,.64,1);
+}
+.mobile-cat-card::before {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+  background:var(--mcat-color,var(--violet));
+  transform:scaleX(0); transition:transform .3s;
+}
+.mobile-cat-card:hover::before, .mobile-cat-card.selected::before { transform:scaleX(1); }
+.mobile-cat-card:hover { transform:scale(1.02); border-color:var(--mcat-color,var(--violet)); }
+.mobile-cat-card.selected { border-color:var(--mcat-color,var(--violet)); background:rgba(var(--mcat-rgb),0.08); }
+.mcat-icon { font-size:28px; }
+.mcat-name { font-size:14px;font-weight:700;color:var(--text); }
+.mcat-count {
+  font-size:11px;color:var(--muted);
+  display:flex;align-items:center;gap:4px;
+}
+.mcat-count strong { color:var(--mcat-color,var(--violet)); }
+
+/* Mobile tools panel */
+.mobile-tools-panel {
+  display: none;
+  padding: 0 16px 80px;
+  max-width: 600px; margin: 0 auto;
+}
+.panel-back {
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:600;color:var(--muted);
+  padding:12px 0 16px; cursor:pointer;
+  transition: color .2s;
+}
+.panel-back:hover { color:var(--text); }
+
+.mobile-tool-list { display:flex;flex-direction:column;gap:10px; }
+.mobile-tool-item {
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px;
+  display:flex;gap:14px;align-items:flex-start;
+  transition:all .2s;
+}
+.mobile-tool-item:hover { border-color:var(--card-accent-color,var(--violet)); }
+.mti-icon {
+  width:40px;height:40px;border-radius:10px;
+  background:var(--card-accent-bg,rgba(139,92,246,.1));
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.mti-body { flex:1; min-width:0; }
+.mti-name { font-size:14px;font-weight:700;margin-bottom:4px; }
+.mti-desc { font-size:12px;color:var(--muted);line-height:1.5; }
+.mti-link {
+  flex-shrink:0; display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:8px;
+  background:var(--card-accent-bg,rgba(139,92,246,.15));
+  color:var(--card-accent-color,var(--violet));
+  font-size:14px; transition:all .2s;
+}
+.mti-link:hover { transform:scale(1.1); }
+
+/* ─── COMMAND BAR ─────────────────────────────────────── */
+.cmd-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);z-index:200;
+  display:none;align-items:flex-start;justify-content:center;
+  padding-top:15vh;
+}
+.cmd-overlay.open { display:flex; }
+.cmd-box {
+  width:100%;max-width:600px;
+  background:#111118;border:1px solid var(--border2);
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05);
+  animation: cmdDrop .2s ease;
+}
+@keyframes cmdDrop { from{opacity:0;transform:translateY(-12px)scale(.98)} to{opacity:1;transform:none} }
+.cmd-input-row {
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;border-bottom:1px solid var(--border);
+}
+.cmd-input-row svg { color:var(--muted);flex-shrink:0; }
+#cmdInput {
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-family:inherit;font-size:16px;
+}
+#cmdInput::placeholder { color:var(--dim); }
+.cmd-esc {
+  padding:3px 9px;border-radius:6px;
+  background:var(--dim);color:var(--muted);
+  font-size:11px;border:1px solid rgba(255,255,255,.08);
+}
+.cmd-results { max-height:400px;overflow-y:auto; padding:8px; }
+.cmd-item {
+  display:flex;align-items:center;gap:12px;
+  padding:11px 12px;border-radius:10px;cursor:pointer;
+  transition:background .15s;
+}
+.cmd-item:hover, .cmd-item.focused { background:var(--glass2); }
+.cmd-item-icon {
+  width:34px;height:34px;border-radius:9px;
+  background:var(--glass2);display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.cmd-item-info { flex:1;min-width:0; }
+.cmd-item-name { font-size:14px;font-weight:600; }
+.cmd-item-cat { font-size:11px;color:var(--muted);margin-top:1px; }
+.cmd-item-arrow { color:var(--muted);font-size:12px; }
+.cmd-empty { text-align:center;padding:40px 20px;color:var(--muted); }
+
+/* ─── AUTH MODAL ─────────────────────────────────────── */
+.auth-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(10px);z-index:200;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.auth-overlay.open { display:flex; }
+.auth-box {
+  width:100%;max-width:420px;
+  background:#0d0d14;border:1px solid var(--border2);
+  border-radius:24px;padding:36px;
+  box-shadow:0 40px 80px rgba(0,0,0,.7);
+  animation: cmdDrop .25s ease;
+  position:relative;
+}
+.auth-close {
+  position:absolute;top:16px;right:16px;
+  width:32px;height:32px;border-radius:8px;
+  background:var(--glass2);color:var(--muted);font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;
+}
+.auth-close:hover { color:var(--text);background:var(--glass); }
+.auth-logo { display:flex;align-items:center;gap:10px;margin-bottom:28px; }
+.auth-title { font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px; }
+.auth-sub { font-size:14px;color:var(--muted);margin-bottom:28px; }
+.social-btn {
+  width:100%;padding:13px;border-radius:12px;
+  border:1px solid var(--border2);background:var(--glass2);
+  color:var(--text);font-family:inherit;font-size:14px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  cursor:pointer;transition:all .2s;margin-bottom:12px;
+}
+.social-btn:hover { background:var(--glass);border-color:rgba(255,255,255,.2);transform:translateY(-1px); }
+.social-btn svg { flex-shrink:0; }
+.auth-divider {
+  display:flex;align-items:center;gap:12px;
+  margin:20px 0;color:var(--muted);font-size:13px;
+}
+.auth-divider::before,.auth-divider::after {
+  content:'';flex:1;height:1px;background:var(--border);
+}
+.auth-input {
+  width:100%;padding:12px 14px;border-radius:10px;
+  background:var(--glass2);border:1px solid var(--border2);
+  color:var(--text);font-family:inherit;font-size:14px;
+  outline:none;margin-bottom:12px;transition:border-color .2s;
+}
+.auth-input:focus { border-color:var(--violet); }
+.auth-input::placeholder { color:var(--muted); }
+.auth-submit {
+  width:100%;padding:13px;border-radius:12px;
+  background:linear-gradient(135deg,var(--violet),#6d28d9);
+  color:#fff;font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;border:none;transition:all .2s;
+  box-shadow:0 4px 20px rgba(139,92,246,.35);
+  margin-bottom:16px;
+}
+.auth-submit:hover { transform:translateY(-1px);box-shadow:0 6px 24px rgba(139,92,246,.5); }
+.auth-switch { text-align:center;font-size:13px;color:var(--muted); }
+.auth-switch a { color:var(--cyan);cursor:pointer;font-weight:600; }
+
+/* ─── EMPTY STATE ─────────────────────────────────────── */
+.empty-state {
+  grid-column:1/-1;text-align:center;
+  padding:80px 20px;color:var(--muted);
+}
+.empty-state .e-icon { font-size:48px;margin-bottom:16px; }
+.empty-state h3 { font-size:20px;color:var(--text);margin-bottom:8px; }
+
+/* ─── FOOTER ──────────────────────────────────────────── */
+footer {
+  position:relative;z-index:10;
+  border-top:1px solid var(--border);
+  padding:32px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-brand { display:flex;align-items:center;gap:8px; }
+.footer-copy { font-size:12px;color:var(--muted); }
+.footer-links { display:flex;gap:16px; }
+.footer-links a { font-size:12px;color:var(--muted);transition:color .2s; }
+.footer-links a:hover { color:var(--cyan); }
+.submit-btn {
+  display:flex;align-items:center;gap:6px;
+  padding:9px 18px;border-radius:10px;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  color:#060610;font-size:13px;font-weight:700;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.submit-btn:hover { transform:scale(1.03);box-shadow:0 0 20px rgba(0,245,212,.3); }
+
+/* ─── SCROLL TOP ─────────────────────────────────────── */
+#scrollTop {
+  position:fixed;bottom:28px;right:28px;
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  color:#fff;font-size:18px;border:none;cursor:pointer;
+  opacity:0;transform:translateY(12px);transition:all .3s;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(139,92,246,.4);z-index:50;
+}
+#scrollTop.show { opacity:1;transform:none; }
+#scrollTop:hover { transform:translateY(-2px);box-shadow:0 8px 28px rgba(139,92,246,.6); }
+
+/* ─── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hamburger { display:flex; }
+  .mobile-drawer { display:block; }
+  .search-wrap { display:none; }
+  .header-right .btn-ghost,
+  .header-right .btn-primary { display:none; }
+  .cat-bar { display:none; }
+  .hero { padding: 40px 16px 32px; }
+  .grid-wrap { display:none; }
+  .mobile-cat-grid { display:grid; }
+  #scrollTop { bottom:16px;right:16px; }
+  footer { flex-direction:column;align-items:flex-start; }
+}
+
+@media (min-width: 1400px) {
+  .bento-grid { grid-template-columns:repeat(4,1fr); }
+}
+
+/* ─── TOOLTIP ─────────────────────────────────────────── */
+[data-tip] { position:relative; }
+[data-tip]:hover::after {
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 8px);left:50%;
+  transform:translateX(-50%);
+  background:#1a1a25;border:1px solid var(--border2);
+  color:var(--text);font-size:12px;padding:5px 10px;border-radius:7px;
+  white-space:nowrap;pointer-events:none;z-index:200;
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo">
+    <div class="logo-mark">⚡</div>
+    <span class="logo-text">TROOP<span>BOX</span> AI</span>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-inner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search 122 AI tools…" autocomplete="off">
+      <span class="kbd" data-tip="Quick search">⌘K</span>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button class="btn-ghost" onclick="openAuth('login')">Log in</button>
+    <button class="btn-primary" onclick="openAuth('signup')">Sign up free</button>
+  </div>
+
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ── MOBILE DRAWER ── -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input id="mobileSearch" type="text" placeholder="Search tools…" autocomplete="off">
+  </div>
+  <div class="drawer-title">Browse Categories</div>
+  <div class="drawer-cats" id="drawerCats"></div>
+  <div style="display:flex;gap:10px;margin-top:8px;">
+    <button class="social-btn" style="flex:1" onclick="openAuth('login')">Log in</button>
+    <button class="submit-btn" style="flex:1" onclick="openAuth('signup')">Sign up free ✦</button>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Curated · Free · Updated 2026
+  </div>
+  <h1>
+    <span class="h1-line1">Discover Every</span>
+    <span class="h1-line2">Free AI Tool.</span>
+  </h1>
+  <p class="hero-sub">122 free AI tools across 10 categories — chat, code, images, audio, résumé, ATS, and more. All free, all curated.</p>
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-n" id="totalCount">122</span>
+      <span class="stat-l">Tools</span>
+    </div>
+    <div class="stat">
+      <span class="stat-n">10</span>
+      <span class="stat-l">Categories</span>
+    </div>
+    <div class="stat">
+      <span class="stat-n">100%</span>
+      <span class="stat-l">Free</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── CATEGORY BAR (Desktop) ── -->
+<div class="cat-bar">
+  <div class="cat-scroll" id="catBar"></div>
+</div>
+
+<!-- ── RESULT INFO ── -->
+<div class="result-bar">
+  <div class="result-text" id="resultText"></div>
+</div>
+
+<!-- ── BENTO GRID (Desktop) ── -->
+<div class="grid-wrap">
+  <div class="bento-grid" id="bentoGrid"></div>
+</div>
+
+<!-- ── MOBILE: CATEGORY CARDS ── -->
+<div class="mobile-cat-grid" id="mobileCatGrid"></div>
+
+<!-- ── MOBILE: TOOLS PANEL ── -->
+<div class="mobile-tools-panel" id="mobileToolsPanel">
+  <div class="panel-back" onclick="showMobileCats()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Categories
+  </div>
+  <div id="panelCatTitle" style="font-size:20px;font-weight:800;margin-bottom:16px;"></div>
+  <div class="mobile-tool-list" id="mobileToolList"></div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>
+    <div class="footer-brand">
+      <div class="logo-mark" style="width:26px;height:26px;font-size:12px;border-radius:7px;">⚡</div>
+      <span style="font-size:14px;font-weight:800;">TROOPBOX AI</span>
+    </div>
+    <div class="footer-copy" style="margin-top:6px;">© 2026 Troopbox AI · All rights reserved</div>
+  </div>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Twitter</a>
+  </div>
+  <button class="submit-btn" onclick="openAuth('signup')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    Submit a Tool
+  </button>
+</footer>
+
+<!-- ── SCROLL TOP ── -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ── COMMAND BAR ── -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="closeCmdOnOverlay(event)">
+  <div class="cmd-box">
+    <div class="cmd-input-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="cmdInput" placeholder="Search AI tools…" autocomplete="off">
+      <span class="cmd-esc">ESC</span>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+  </div>
+</div>
+
+<!-- ── AUTH MODAL ── -->
+<div class="auth-overlay" id="authOverlay" onclick="closeAuthOnOverlay(event)">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-logo">
+      <div class="logo-mark" style="width:32px;height:32px;font-size:14px;border-radius:9px;">⚡</div>
+      <span style="font-size:16px;font-weight:800;">TROOPBOX AI</span>
+    </div>
+    <h2 class="auth-title" id="authTitle">Welcome back</h2>
+    <p class="auth-sub" id="authSub">Sign in to save tools and personalize your feed</p>
+
+    <button class="social-btn" onclick="handleSocialAuth('Google')">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Continue with Google
+    </button>
+    <button class="social-btn" onclick="handleSocialAuth('GitHub')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      Continue with GitHub
+    </button>
+
+    <div class="auth-divider">or</div>
+    <input class="auth-input" type="email" placeholder="Email address">
+    <input class="auth-input" type="password" placeholder="Password" id="authPwdField">
+    <button class="auth-submit" onclick="handleEmailAuth()">
+      <span id="authBtnText">Sign In →</span>
+    </button>
+    <div class="auth-switch" id="authSwitch">
+      Don't have an account? <a onclick="toggleAuthMode()">Sign up free</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════ */
+const TOOLS = [
+  { id:1,  cat:"Web Chat",   name:"ChatGPT",             url:"https://chat.openai.com",        desc:"OpenAI's flagship chatbot. Free tier includes limited GPT-4o access, web browsing, vision & data analysis.",  icon:"🤖", tags:"openai gpt" },
+  { id:2,  cat:"Web Chat",   name:"Claude",              url:"https://claude.ai",              desc:"Anthropic's chatbot. Best-in-class writing quality with nuanced reasoning. Free tier ~20–30 msgs/day.",        icon:"🧠", tags:"anthropic writing" },
+  { id:3,  cat:"Web Chat",   name:"Google Gemini",       url:"https://gemini.google.com",      desc:"Google's flagship AI. Strong at coding, reasoning & search accuracy. Deeply integrated with Google Workspace.", icon:"♊", tags:"google search" },
+  { id:4,  cat:"Web Chat",   name:"Microsoft Copilot",   url:"https://copilot.microsoft.com",  desc:"Wired into Word, Excel, PowerPoint, Outlook & Teams. Access without sign-in on the web.",                    icon:"🪟", tags:"microsoft office" },
+  { id:5,  cat:"Web Chat",   name:"Perplexity AI",       url:"https://perplexity.ai",          desc:"AI-powered research engine. 5 Pro searches/day + unlimited basic searches free. Cites sources.",              icon:"🔭", tags:"research search sources" },
+  { id:6,  cat:"Web Chat",   name:"Duck.ai",             url:"https://duck.ai",                desc:"DuckDuckGo's privacy-first AI wrapper. Access GPT-4o mini & Claude 3.5 Haiku with no IP tracking. No sign-up.", icon:"🦆", tags:"privacy anonymous" },
+  { id:7,  cat:"Web Chat",   name:"Meta AI",             url:"https://meta.ai",                desc:"Powered by LLaMA 4. Integrated into Instagram, Facebook & WhatsApp. Fast, conversational, context-aware.",    icon:"🌐", tags:"meta llama social" },
+  { id:8,  cat:"Web Chat",   name:"Le Chat (Mistral)",   url:"https://chat.mistral.ai",        desc:"Mistral's chatbot with extended thinking, deep research, pre-built agents & up to 500 saved memories. Free tier.", icon:"🐱", tags:"mistral research memory" },
+  { id:9,  cat:"Web Chat",   name:"HuggingChat",         url:"https://huggingface.co/chat/",   desc:"Open-source ChatGPT alternative. Unlimited usage across multiple open models. No vendor lock-in.",            icon:"🤗", tags:"open source huggingface" },
+  { id:10, cat:"Web Chat",   name:"Grok",                url:"https://x.com/i/grok",           desc:"xAI's bold chatbot integrated into X (Twitter). Pulls live data from X. Free plan with limited chat modes.",   icon:"🔥", tags:"xai twitter elon live" },
+  { id:11, cat:"Web Chat",   name:"QuillBot AI Chat",    url:"https://quillbot.com/ai-chat",   desc:"Fast, intuitive AI chat from QuillBot. Up to 20 free queries/day. Great for writing and paraphrasing tasks.", icon:"✏️", tags:"writing paraphrase" },
+  { id:12, cat:"Web Chat",   name:"LMSYS Arena",         url:"https://chat.lmsys.org/",        desc:"Battle-test top AI models head-to-head and vote on which performs better. Great for comparison.",             icon:"⚔️", tags:"compare benchmark" },
+  { id:13, cat:"Web Chat",   name:"WebLLM",              url:"https://chat.webllm.ai/",        desc:"Runs open LLMs entirely in your browser using local GPU via WebGPU. No data leaves your machine.",            icon:"💻", tags:"browser local webgpu" },
+  { id:14, cat:"Web Chat",   name:"Pollinations.ai",     url:"https://pollinations.ai/",       desc:"Free, open API for text and image generation. No key required for basic usage.",                              icon:"🌸", tags:"api image generation" },
+  { id:15, cat:"Local Chat", name:"LM Studio",           url:"https://lmstudio.ai/",           desc:"Easiest GUI for running local LLMs.",               icon:"🖥️", tags:"gui local" },
+  { id:16, cat:"Local Chat", name:"Ollama",              url:"https://ollama.com/",            desc:"Lightweight CLI engine for local AI.",              icon:"🦙", tags:"cli local" },
+  { id:17, cat:"Local Chat", name:"GPT4All",             url:"https://gpt4all.io/",            desc:"Runs AI on standard laptops and CPUs.",             icon:"💡", tags:"cpu offline" },
+  { id:18, cat:"Local Chat", name:"Jan.ai",              url:"https://jan.ai/",                desc:"Privacy-focused local desktop interface.",          icon:"🔒", tags:"privacy desktop" },
+  { id:19, cat:"Local Chat", name:"AnythingLLM",         url:"https://anythingllm.com/",       desc:"Chat with private docs and PDFs.",                  icon:"📄", tags:"rag documents pdf" },
+  { id:20, cat:"Local Chat", name:"KoboldCPP",           url:"https://github.com/LostRuins/koboldcpp", desc:"Optimized for creative writing and roleplay.", icon:"✍️", tags:"creative roleplay" },
+  { id:21, cat:"Local Chat", name:"Msty",                url:"https://msty.app/",              desc:"Minimalist, beginner-friendly local UI.",           icon:"✨", tags:"beginner simple" },
+  { id:22, cat:"Local Chat", name:"Llama.cpp",           url:"https://github.com/ggerganov/llama.cpp", desc:"High-performance core inference engine.",      icon:"⚡", tags:"performance engine" },
+  { id:23, cat:"Local Chat", name:"Open-WebUI",          url:"https://openwebui.com/",         desc:"Self-hosted ChatGPT-style interface.",              icon:"🌐", tags:"self-hosted" },
+  { id:24, cat:"Local Chat", name:"Chatbox",             url:"https://chatboxai.app/",         desc:"Prompt management and model switching.",           icon:"💬", tags:"prompts models" },
+  { id:25, cat:"Images",     name:"Perchance AI",        url:"https://perchance.org/ai-text-to-image-generator", desc:"Unlimited browser-based image generation.", icon:"🎨", tags:"browser unlimited" },
+  { id:26, cat:"Images",     name:"ComfyUI",             url:"https://github.com/comfyanonymous/ComfyUI", desc:"Professional node-based Stable Diffusion workflow.", icon:"🔧", tags:"stable diffusion nodes" },
+  { id:27, cat:"Images",     name:"Fooocus",             url:"https://github.com/lllyasviel/Fooocus", desc:"Simple Midjourney-style local image app.",      icon:"🖼️", tags:"midjourney simple" },
+  { id:28, cat:"Images",     name:"Automatic1111",       url:"https://github.com/AUTOMATIC1111/stable-diffusion-webui", desc:"Most popular local Stable Diffusion dashboard.", icon:"🚀", tags:"stable diffusion popular" },
+  { id:29, cat:"Images",     name:"InvokeAI",            url:"https://github.com/invoke-ai/InvokeAI", desc:"Professional Infinite Canvas image UI.",        icon:"🎭", tags:"canvas professional" },
+  { id:30, cat:"Images",     name:"Easy Diffusion",      url:"https://easydiffusion.github.io/", desc:"Simplest 1-click Stable Diffusion installer.",   icon:"🎈", tags:"1-click beginner" },
+  { id:31, cat:"Images",     name:"Krita AI",            url:"https://github.com/Acly/krita-ai-diffusion", desc:"Real-time AI painting plugin for Krita.",    icon:"🖌️", tags:"painting plugin krita" },
+  { id:32, cat:"Images",     name:"SD.Next",             url:"https://github.com/vladmandic/automatic", desc:"Advanced build of Automatic1111.",             icon:"⚙️", tags:"advanced stable diffusion" },
+  { id:33, cat:"Audio",      name:"OpenAI Whisper",      url:"https://github.com/openai/whisper", desc:"World-class local speech transcription.",         icon:"🎙️", tags:"transcription speech" },
+  { id:34, cat:"Audio",      name:"Buzz",                url:"https://github.com/chidiwilliams/buzz", desc:"Desktop app for Whisper transcription.",         icon:"🔊", tags:"whisper desktop" },
+  { id:35, cat:"Audio",      name:"Bark",                url:"https://github.com/suno-ai/bark", desc:"Realistic TTS with human nuances.",                icon:"🐶", tags:"tts voice" },
+  { id:36, cat:"Audio",      name:"Audiocraft",          url:"https://github.com/facebookresearch/audiocraft", desc:"Text-to-Music generation by Meta.",         icon:"🎵", tags:"music generation meta" },
+  { id:37, cat:"Audio",      name:"Coqui TTS",           url:"https://github.com/coqui-ai/TTS", desc:"Library of high-quality local voices.",            icon:"🐸", tags:"tts voices library" },
+  { id:38, cat:"Audio",      name:"RVC",                 url:"https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI", desc:"Real-time local voice cloning.", icon:"🎤", tags:"voice clone" },
+  { id:39, cat:"Audio",      name:"AllTalk TTS",         url:"https://github.com/erew123/alltalk_tts", desc:"Integrates voice into local chatbots.",         icon:"🗣️", tags:"tts chatbot" },
+  { id:40, cat:"Audio",      name:"WhisperX",            url:"https://github.com/m-bain/whisperX", desc:"Fast transcription with word-level timestamps.", icon:"⚡", tags:"transcription fast timestamps" },
+  { id:41, cat:"Audio",      name:"SadTalker",           url:"https://github.com/OpenTalker/SadTalker", desc:"Animates static faces to match audio.",         icon:"🎬", tags:"animation face" },
+  { id:42, cat:"Coding",     name:"Continue.dev",        url:"https://continue.dev/",          desc:"Open-source VS Code Copilot alternative.",         icon:"🔄", tags:"vscode copilot" },
+  { id:43, cat:"Coding",     name:"Twinny",              url:"https://github.com/twinnydotdev/twinny", desc:"Local code completion and chat.",               icon:"👯", tags:"completion chat" },
+  { id:44, cat:"Coding",     name:"Tabby",               url:"https://github.com/TabbyML/tabby", desc:"Self-hosted coding assistant server.",             icon:"🐱", tags:"self-hosted server" },
+  { id:45, cat:"Coding",     name:"Llama Coder",         url:"https://github.com/ex3ndr/llama-coder", desc:"Ollama-powered autocomplete.",                  icon:"🦙", tags:"ollama autocomplete" },
+  { id:46, cat:"Coding",     name:"FauxPilot",           url:"https://github.com/fauxpilot/fauxpilot", desc:"Local GitHub Copilot API emulator.",            icon:"🤖", tags:"copilot github" },
+  { id:47, cat:"Coding",     name:"Cline",               url:"https://github.com/cline/cline", desc:"Autonomous local coding agent.",                   icon:"🛠️", tags:"agent autonomous" },
+  { id:48, cat:"Coding",     name:"OpenHands",           url:"https://github.com/All-Hands-AI/OpenHands", desc:"AI agent for software engineering tasks.",     icon:"🤲", tags:"agent engineering" },
+  { id:49, cat:"Coding",     name:"Aider",               url:"https://aider.chat/",            desc:"Terminal-based AI for Git and coding.",            icon:"💻", tags:"terminal git" },
+  { id:50, cat:"Utility",    name:"Upscayl",             url:"https://upscayl.org/",           desc:"High-end AI image upscaling app.",                 icon:"🔍", tags:"upscale image" },
+  { id:51, cat:"Utility",    name:"PrivateGPT",          url:"https://docs.privategpt.dev/",   desc:"Secure local document analysis.",                  icon:"🔐", tags:"private documents secure" },
+  { id:52, cat:"Utility",    name:"GPT Researcher",      url:"https://gptr.dev/",              desc:"Autonomous research report generator.",            icon:"🔬", tags:"research report" },
+  { id:53, cat:"Utility",    name:"AutoGPT",             url:"https://agpt.co/",               desc:"General task-solving AI agent.",                   icon:"🤖", tags:"agent tasks" },
+  { id:54, cat:"Utility",    name:"FaceFusion",          url:"https://facefusion.io/",         desc:"High-definition face swapping tool.",              icon:"😶", tags:"face swap deepfake" },
+  { id:55, cat:"Utility",    name:"AnimateDiff",         url:"https://github.com/guoyww/AnimateDiff", desc:"Text-to-Video and Animation generation (local).", icon:"🎞️", tags:"video animation" },
+  { id:56, cat:"Utility",    name:"BackgroundRemover",   url:"https://github.com/nadermx/backgroundremover", desc:"Local AI background stripping.",            icon:"✂️", tags:"background remove" },
+  { id:57, cat:"Utility",    name:"SearXNG",             url:"https://docs.searxng.org/",      desc:"Local AI-powered privacy search engine.",          icon:"🔎", tags:"search privacy" },
+  { id:58, cat:"Utility",    name:"Pinokio",             url:"https://pinokio.computer/",      desc:"1-Click installer for any AI app.",                icon:"🤥", tags:"installer 1-click" },
+  { id:59, cat:"Presentation", name:"EasySlides",        url:"https://easyslides.ai",          desc:"100% free, no login. Drag & drop or type topic → PDF export free.",  icon:"🎯", tags:"no login free ppt pdf" },
+  { id:60, cat:"Presentation", name:"NoteGPT AI PPT",    url:"https://notegpt.io/ai-ppt-maker", desc:"No signup. Generate and download PPTX, PDF, or Keynote instantly.", icon:"📝", tags:"no login pptx keynote" },
+  { id:61, cat:"Presentation", name:"EdrawMax AI PPT",   url:"https://www.edrawmax.com/app/ai-ppt/", desc:"Text-to-slides online, no login. Full editor, free PPTX download.", icon:"✏️", tags:"no login online editor" },
+  { id:62, cat:"Presentation", name:"PoweredTemplate AI",url:"https://ai.poweredtemplate.com/", desc:"Pick theme → AI builds complete deck with images. Free PPT/PDF & Google Slides.", icon:"⚡", tags:"no login free google slides" },
+  { id:63, cat:"Presentation", name:"Gamma",             url:"https://gamma.app",              desc:"Best AI-native presentation tool. 400 free credits, modern responsive designs.", icon:"γ", tags:"ai credits web sharing design" },
+  { id:64, cat:"Presentation", name:"Canva Magic Design",url:"https://www.canva.com/create/ai-presentations/", desc:"10 free Magic Design uses. Thousands of templates, excellent quality.", icon:"🎨", tags:"templates design ai" },
+  { id:65, cat:"Presentation", name:"Slidesgo AI",       url:"https://slidesgo.com/ai/presentation-maker", desc:"3 free PPTs/month. 100+ professional templates, PPTX export.", icon:"📊", tags:"students teachers pptx monthly" },
+  { id:66, cat:"Presentation", name:"Adobe Express",     url:"https://www.adobe.com/express/create/ai/presentation", desc:"AI outline from prompt or files. Free PDF & PPTX export. Limited free generations.", icon:"🅐", tags:"adobe outline pdf pptx" },
+  { id:67, cat:"Presentation", name:"AiPPT",             url:"https://www.aippt.com/",         desc:"Slides from PDFs, URLs. 43 languages, adjustable tone & audience.", icon:"🤖", tags:"pdf url multilingual 43 languages" },
+  { id:68, cat:"Presentation", name:"Presentations.AI",  url:"https://www.presentations.ai/", desc:"Fastest generation (~40 sec). No credit card. Quality can be inconsistent.", icon:"⚡", tags:"fast speed free trial" },
+  { id:69, cat:"Presentation", name:"Google Slides+Gemini",url:"https://slides.google.com",   desc:"Unlimited free slides with Gemini AI built in. Best for Google Workspace users.", icon:"📑", tags:"google workspace free unlimited" },
+  { id:70, cat:"Presentation", name:"SlidesAI",          url:"https://www.slidesai.io/",       desc:"Google Slides add-on. Convert text to slides. 3 presentations/month free.", icon:"🔌", tags:"google slides addon text" },
+  { id:71, cat:"Presentation", name:"GenPPT",            url:"https://genppt.com",             desc:"Deep research before building. Best quality content fast. Free trial.", icon:"🔬", tags:"research quality free trial" },
+  { id:72, cat:"Presentation", name:"Genspark Slides",   url:"https://www.genspark.ai",        desc:"Multi-agent AI researches the web while building your deck from real data.", icon:"✨", tags:"research multi-agent sourced" },
+  { id:73, cat:"Presentation", name:"Kimi Slides",       url:"https://kimi.ai",                desc:"Open-source Kimi K2. Creates editable outline first — you adjust before template lock.", icon:"🌙", tags:"outline control open source kimi" },
+  { id:74, cat:"Presentation", name:"Z.AI",              url:"https://z.ai",                   desc:"Best instruction-following. Researches before building, surfaces newest data.", icon:"⚡", tags:"accuracy research instructions" },
+  { id:75, cat:"Presentation", name:"Manus AI Slides",   url:"https://manus.ai",               desc:"300 free credits/day — 1–2 full decks daily. Auto-researches any topic.", icon:"🖐️", tags:"300 credits daily free research" },
+  { id:76, cat:"Presentation", name:"EdrawMind AI",      url:"https://www.edrawmind.com",      desc:"Convert PDFs, Word docs or videos into editable PowerPoints. No design skills needed.", icon:"🧠", tags:"pdf word video convert ppt" },
+  { id:77, cat:"Resume", name:"Monster Resume Builder",  url:"https://www.monster.com/resume",         desc:"100% free forever. Unlimited resumes, PDF & DOCX, ATS-friendly templates, AI suggestions.", icon:"👾", tags:"free unlimited ats pdf docx" },
+  { id:78, cat:"Resume", name:"Teal Resume Builder",     url:"https://www.tealhq.com/tools/resume-builder", desc:"Best free all-in-one job search + resume. Unlimited DOC/PDF, LinkedIn import, job match scoring.", icon:"🌿", tags:"linkedin job match chrome extension" },
+  { id:79, cat:"Resume", name:"Weekday.works",           url:"https://www.weekday.works/resume-builder", desc:"ChatGPT-powered, free. Build in minutes, download PDF or Word. Customizable layouts.", icon:"📅", tags:"chatgpt fast pdf word free" },
+  { id:80, cat:"Resume", name:"FlowCV",                  url:"https://flowcv.com",                     desc:"50+ templates, unlimited watermark-free PDFs, ATS-friendly. First resume free forever. 4.9/5 Trustpilot.", icon:"🌊", tags:"templates watermark-free ats trustpilot" },
+  { id:81, cat:"Resume", name:"NoteGPT Resume",          url:"https://notegpt.io/ai-resume-builder",   desc:"No sign-up. AI analyzes job descriptions for ATS keyword matching. Step-by-step guidance.", icon:"📝", tags:"no signup ats keywords job description" },
+  { id:82, cat:"Resume", name:"Wobo",                    url:"https://www.wobo.ai",                    desc:"Unlimited free resumes. 24-point ATS analysis + STAR/CAR framework. Rivals $30–50/mo tools.", icon:"🎯", tags:"ats 24-point star car framework free forever" },
+  { id:83, cat:"Resume", name:"Indeed Resume Builder",   url:"https://www.indeed.com",                 desc:"Zero friction. Built into world's largest job platform. ATS-safe, apply to jobs directly.", icon:"🔍", tags:"indeed job search ats free" },
+  { id:84, cat:"Resume", name:"ResumeFast",              url:"https://www.resumefast.io",              desc:"Free AI writing, ATS scoring, and PDF downloads. No credit card.", icon:"⚡", tags:"ai writing ats score pdf free" },
+  { id:85, cat:"Resume", name:"Reactive Resume",         url:"https://rxresu.me",                      desc:"Gold standard open-source builder. 20+ templates, AI suggestions, drag-and-drop. Self-hostable, MIT licensed.", icon:"⚛️", tags:"open source self-hosted docker mit ai" },
+  { id:86, cat:"Resume", name:"OpenResume",              url:"https://www.open-resume.com",            desc:"Free, open-source, no account. U.S. job market optimized. Built-in ATS parser to test readability.", icon:"📄", tags:"open source no account us ats parser" },
+  { id:87, cat:"Resume", name:"RenderCV",                url:"https://rendercv.com",                   desc:"Resume-as-code: YAML → LaTeX-quality PDF. AI tailors CV to job descriptions. Great for engineers.", icon:"🖥️", tags:"yaml latex engineers academics open source" },
+  { id:88, cat:"Resume", name:"Resmume",                 url:"https://resmume.com",                    desc:"No registration. Professional resume in 10 minutes. Unlimited editing, PDF & PNG download.", icon:"✍️", tags:"no registration unlimited pdf png ai" },
+  { id:89, cat:"Resume", name:"OhMyCV",                  url:"https://ohmycv.app",                     desc:"Free, open-source, privacy-first. Data stays with you. Minimalist, no tracking.", icon:"🔒", tags:"open source privacy no tracking minimalist" },
+  { id:90, cat:"Resume", name:"Rezi",                    url:"https://www.rezi.ai",                    desc:"Forbes #1 AI resume builder. Free: 1 resume, 3 PDF downloads, ATS keyword targeting, unlimited cover letters.", icon:"🏆", tags:"forbes ats keyword cover letter" },
+  { id:91, cat:"Resume", name:"Novoresume",              url:"https://novoresume.com",                  desc:"Zero to finished resume in ~5 min. Multi-language, international conventions. Free: one-page limit.", icon:"🌍", tags:"international multilingual fast bbc forbes" },
+  { id:92, cat:"Resume", name:"Hiration",                url:"https://www.hiration.com",               desc:"Free plan + Pro trial. ChatGPT AI summary, 28 resume templates, 11 cover letter templates.", icon:"✨", tags:"chatgpt summary templates cover letter trial" },
+  { id:93, cat:"Resume", name:"MyPerfectResume",         url:"https://www.myperfectresume.com",         desc:"Free AI suggestions + unlimited .TXT downloads. Step-by-step builder. PDF/Word requires paid.", icon:"📋", tags:"txt free ai suggestions step-by-step" },
+  { id:94,  cat:"ATS Score", name:"ResumeAdapter ATS",   url:"https://www.resumeadapter.com",           desc:"No login. Upload resume + job description → 0–100 ATS score in 30 seconds. Keyword gap + exact fixes. Privacy-focused.", icon:"🎯", tags:"no login score 30 seconds keyword gap privacy" },
+  { id:95,  cat:"ATS Score", name:"KudosWall ATS",       url:"https://pro.kudoswall.com/resume-analyzer/", desc:"No login. Instant 0–100 score, 5 languages (EN/ES/AR/FR/DE), calibrated for US, UK & global ATS.", icon:"🌍", tags:"no login multilingual global us uk score" },
+  { id:96,  cat:"ATS Score", name:"HireFlow ATS",        url:"https://hireflow.net/",                   desc:"No login. ATS score + fixes + free resume builder + cover letter tools — all without an account.", icon:"🔄", tags:"no login all-in-one resume builder cover letter" },
+  { id:97,  cat:"ATS Score", name:"ATSFriendly.com",     url:"https://www.atsfriendly.com/",            desc:"GPT-4.1 powered, free. Checks hard skills, soft skills, action verbs & job titles. Results in seconds.", icon:"🤖", tags:"gpt-4.1 no login keywords formatting free" },
+  { id:98,  cat:"ATS Score", name:"ResyMatch",           url:"https://cultivatedculture.com/resume-scanner/", desc:"Free scanner by Cultivated Culture. Score vs job description. Aim for 75+. Sample scan without account.", icon:"🎯", tags:"job description match 75 keyword cultivated" },
+  { id:99,  cat:"ATS Score", name:"Jobscan",             url:"https://www.jobscan.co/",                 desc:"Industry standard. 5 free scans/month. Detects real ATS (Workday, Taleo, Greenhouse, iCIMS). Most trusted.", icon:"⭐", tags:"industry standard 5 scans workday taleo greenhouse" },
+  { id:100, cat:"ATS Score", name:"Resume Worded",       url:"https://resumeworded.com/score",          desc:"Free scoring across 30+ factors. Line-by-line recommendations. Emphasizes measurable achievements.", icon:"📊", tags:"30 factors line-by-line achievements score" },
+  { id:101, cat:"ATS Score", name:"Enhancv Checker",     url:"https://enhancv.com/resources/resume-checker/", desc:"Free 16-point ATS audit. ChatGPT-powered, trained on 2M resumes. Score 80+ means you're good.", icon:"✅", tags:"16 checks chatgpt 2m resumes content formatting" },
+  { id:102, cat:"ATS Score", name:"MyPerfectResume ATS", url:"https://www.myperfectresume.com/resume/ats-resume-checker", desc:"Free ATS check, 30+ criteria, 6 file formats (DOC/PDF/HTML/RTF/TXT up to 5MB).", icon:"📋", tags:"30 criteria 6 formats mobile desktop score" },
+  { id:103, cat:"ATS Score", name:"ResuScan",            url:"https://resuscan.com",                    desc:"Top 2026 pick. 40 ATS factors — formatting, layout, keywords, sections, readability. Free detailed report.", icon:"🔬", tags:"40 factors formatting layout readability report 2026" },
+  { id:104, cat:"ATS Score", name:"SkillSyncer",         url:"https://skillsyncer.com/",                desc:"Side-by-side keyword comparison. 1 free scan/week. Analyzes thousands of job descriptions. Privacy-focused.", icon:"🔀", tags:"side-by-side keyword 1 scan week privacy" },
+  { id:105, cat:"ATS Score", name:"Kickresume Checker",  url:"https://www.kickresume.com/en/resume-checker/", desc:"Free score across design, content & structure. Compared against successful hired-candidate resumes.", icon:"🏅", tags:"design content structure compare successful" },
+  { id:106, cat:"ATS Score", name:"1MillionResume",      url:"https://1millionresume.com/resume-checker", desc:"Free 10-page report across 18+ ATS checks. Supports PDF/DOC/DOCX. Instant score.", icon:"📄", tags:"18 checks 10-page report pdf doc docx" },
+  { id:107, cat:"ATS Score", name:"NodeFlair ATS",       url:"https://nodeflair.com/resume-checker",    desc:"Best for tech job seekers. Free keyword gap analysis vs job description. Optimized for engineering roles.", icon:"💻", tags:"tech engineering software keyword gap free" },
+  { id:108, cat:"ATS Score", name:"DIY ATS (ChatGPT/Claude)", url:"https://claude.ai",                  desc:"Unlimited free ATS analysis. Paste resume + JD into any AI chatbot → score, missing keywords, fixes.", icon:"💬", tags:"diy unlimited free chatgpt claude gemini prompt" },
+  { id:109, cat:"Website Builder", name:"Wix AI Builder",   url:"https://www.wix.com/ai-website-builder",  desc:"Best overall. Chat with AI → live site instantly. 20+ AI tools: SEO, image creator, blog, logo. Free hosting.", icon:"⚡", tags:"free forever subdomain hosting seo blog logo" },
+  { id:110, cat:"Website Builder", name:"Dorik",            url:"https://dorik.com",                       desc:"Most generous free tier: 5 sites, 5 pages each, unlimited storage & bandwidth, 20 blog posts. 110+ templates.", icon:"🌐", tags:"5 sites unlimited storage templates blocks fast" },
+  { id:111, cat:"Website Builder", name:"Design.com",       url:"https://www.design.com/ai-website-generator", desc:"Unlimited AI generation — customize as many designs as you like. Free branded URL, one-click publishing.", icon:"🎨", tags:"unlimited generation responsive 3 pages free url" },
+  { id:112, cat:"Website Builder", name:"Bookipi",          url:"https://bookipi.com/ai-website-builder/", desc:"30-second AI website generator. Perfect for freelancers & small businesses. Responsive, no code.", icon:"💼", tags:"30 seconds freelancers small business responsive" },
+  { id:113, cat:"Website Builder", name:"Jotform AI",       url:"https://www.jotform.com/ai/website-builder/", desc:"Free AI builder with built-in forms & payments. PWA technology. Accept orders/donations directly.", icon:"📋", tags:"forms payments pwa mobile free publishing" },
+  { id:114, cat:"Website Builder", name:"SITE123",          url:"https://www.site123.com",                 desc:"Simplest builder for beginners. Free plan with hosting, AI-assisted creation, no key features paywalled.", icon:"🟦", tags:"beginner simple hosting free ai" },
+  { id:115, cat:"Website Builder", name:"WebWave",          url:"https://webwave.me/ai-website-builder",   desc:"ChatGPT-powered pixel-perfect drag-and-drop. Full site in 3 minutes, full creative control, no coding.", icon:"🌊", tags:"chatgpt pixel-perfect drag drop 3 min e-commerce" },
+  { id:116, cat:"Website Builder", name:"Renderforest AI",  url:"https://www.renderforest.com/ai-website-builder", desc:"AI website + logo + video + branding suite. Built-in AI copywriter. Free subdomain + hosting.", icon:"🎬", tags:"logo video branding copywriter subdomain hosting" },
+  { id:117, cat:"Website Builder", name:"Framer",           url:"https://www.framer.com",                  desc:"Trusted by startups & Fortune 500. Stunning design quality. Free: 1 site on framer.site subdomain.", icon:"✦", tags:"designer startups fortune 500 layouts free" },
+  { id:118, cat:"Website Builder", name:"Bolt.new",         url:"https://bolt.new",                        desc:"Full-stack AI builder in browser. 1M free tokens/month. Hosting + databases included. Build apps from prompts.", icon:"⚡", tags:"full-stack apps 1m tokens hosting database" },
+  { id:119, cat:"Website Builder", name:"Lovable",          url:"https://lovable.dev",                     desc:"Build full-stack apps via chat. 5 free credits/day. Supabase backend, GitHub sync. No deep coding needed.", icon:"💜", tags:"full-stack no-code 5 credits supabase github" },
+  { id:120, cat:"Website Builder", name:"Mobirise AI",      url:"https://ai.mobirise.com",                 desc:"Offline desktop AI builder. Own your code, host anywhere. Try without account. Standards-compliant output.", icon:"🖥️", tags:"offline desktop own code self-host no account" },
+  { id:121, cat:"Website Builder", name:"DeepSite AI",      url:"https://deepsiteai.com",                  desc:"DeepSeek V3 powered. SEO-optimized business sites, blogs, e-commerce, portfolios. Real-time preview.", icon:"🔮", tags:"deepseek seo business blog ecommerce portfolio" },
+  { id:122, cat:"Website Builder", name:"Dyad",             url:"https://www.dyad.sh",                     desc:"100% free, open-source, local. Runs on your machine. Use with free Gemini API or local Ollama. Full privacy.", icon:"🔒", tags:"open source local privacy gemini ollama" },
+];
+
+const CAT_META = {
+  "Web Chat":       { color:"#00f5d4", icon:"💬", desc:"Cloud AI chatbots" },
+  "Local Chat":     { color:"#38bdf8", icon:"🖥️",  desc:"Run AI locally" },
+  "Images":         { color:"#f472b6", icon:"🎨", desc:"Image generation" },
+  "Audio":          { color:"#fbbf24", icon:"🎵", desc:"Speech & music AI" },
+  "Coding":         { color:"#4ade80", icon:"💻", desc:"AI coding tools" },
+  "Utility":        { color:"#fb923c", icon:"🛠️",  desc:"AI utilities" },
+  "Presentation":   { color:"#c084fc", icon:"📊", desc:"AI slide builders" },
+  "Resume":         { color:"#34d399", icon:"📄", desc:"Resume builders" },
+  "ATS Score":      { color:"#f59e0b", icon:"🎯", desc:"ATS checkers" },
+  "Website Builder":{ color:"#60a5fa", icon:"🌐", desc:"AI web builders" },
+};
+
+const CATS_ALL = ["All", ...Object.keys(CAT_META)];
+const CAT_COUNT = {};
+TOOLS.forEach(t => { CAT_COUNT[t.cat] = (CAT_COUNT[t.cat] || 0) + 1; });
+
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
+let activeFilter = "All";
+let searchQ = "";
+let authMode = "login";
+
+/* ══════════════════════════════════════════════════════
+   CATEGORY BAR (Desktop)
+══════════════════════════════════════════════════════ */
+function buildCatBar() {
+  const bar = document.getElementById("catBar");
+  CATS_ALL.forEach(cat => {
+    const meta = CAT_META[cat] || {};
+    const color = meta.color || "#8b5cf6";
+    const count = cat === "All" ? TOOLS.length : (CAT_COUNT[cat] || 0);
+    const chip = document.createElement("button");
+    chip.className = "cat-chip" + (cat === "All" ? " active" : "");
+    chip.dataset.cat = cat;
+    chip.style.setProperty("--chip-rgb", hexToRgb(color));
+    chip.style.color = cat === "All" ? "#8b5cf6" : color;
+    chip.innerHTML = `<span class="chip-dot"></span>${cat === "All" ? "✦ All" : (meta.icon ? meta.icon + " " : "") + cat} <span style="opacity:.45;font-size:11px;margin-left:2px">${count}</span>`;
+    if (cat === "All") { chip.style.color = "#8b5cf6"; }
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".cat-chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeFilter = cat;
+      renderGrid();
+    });
+    bar.appendChild(chip);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   BENTO GRID (Desktop)
+══════════════════════════════════════════════════════ */
+function getCardStyle(cat) {
+  const m = CAT_META[cat] || {};
+  const c = m.color || "#8b5cf6";
+  return `--card-accent-color:${c};--card-accent-bg:${c}18;`;
+}
+
+function renderGrid() {
+  const grid = document.getElementById("bentoGrid");
+  const q = searchQ.toLowerCase().trim();
+
+  const filtered = TOOLS.filter(t => {
+    const catMatch = activeFilter === "All" || t.cat === activeFilter;
+    const sm = !q || [t.name, t.desc, t.cat, t.tags||""].some(s => s.toLowerCase().includes(q));
+    return catMatch && sm;
+  });
+
+  const rc = document.getElementById("resultText");
+  rc.innerHTML = (q || activeFilter !== "All")
+    ? `Showing <strong>${filtered.length}</strong> of <strong>${TOOLS.length}</strong> tools`
+    : `<strong>${TOOLS.length}</strong> tools across <strong>10</strong> categories`;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="e-icon">🔍</div><h3>No tools found</h3><p>Try a different search or category.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((t, i) => `
+    <a class="tool-card" data-cat="${t.cat}" href="${t.url}" target="_blank" rel="noopener noreferrer"
+       style="${getCardStyle(t.cat)} animation-delay:${Math.min(i*25,500)}ms">
+      <div class="card-head">
+        <div class="card-icon-wrap">${t.icon}</div>
+        <div class="card-meta">
+          <div class="card-num">#${String(t.id).padStart(3,"0")}</div>
+          <div class="card-cat-badge">${t.cat}</div>
+        </div>
+      </div>
+      <div class="card-name">${t.name}</div>
+      <div class="card-desc">${t.desc}</div>
+      <div class="card-link-row">
+        <span class="card-visit">
+          Visit site
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 17 17 7M17 7H7M17 7v10"/></svg>
+        </span>
+      </div>
+    </a>
+  `).join("");
+}
+
+/* ══════════════════════════════════════════════════════
+   MOBILE CATEGORY CARDS
+══════════════════════════════════════════════════════ */
+function buildMobileCats() {
+  const grid = document.getElementById("mobileCatGrid");
+  Object.entries(CAT_META).forEach(([cat, meta]) => {
+    const card = document.createElement("div");
+    card.className = "mobile-cat-card";
+    card.style.setProperty("--mcat-color", meta.color);
+    card.style.setProperty("--mcat-rgb", hexToRgb(meta.color));
+    card.innerHTML = `
+      <div class="mcat-icon">${meta.icon}</div>
+      <div class="mcat-name">${cat}</div>
+      <div class="mcat-count"><strong>${CAT_COUNT[cat]||0}</strong> tools · ${meta.desc}</div>
+    `;
+    card.onclick = () => showMobileCategory(cat, meta);
+    grid.appendChild(card);
+  });
+}
+
+function showMobileCats() {
+  document.getElementById("mobileCatGrid").style.display = "grid";
+  document.getElementById("mobileToolsPanel").style.display = "none";
+}
+
+function showMobileCategory(cat, meta) {
+  document.getElementById("mobileCatGrid").style.display = "none";
+  const panel = document.getElementById("mobileToolsPanel");
+  panel.style.display = "block";
+
+  document.getElementById("panelCatTitle").innerHTML =
+    `<span style="color:${meta.color}">${meta.icon}</span> ${cat}`;
+
+  const tools = TOOLS.filter(t => t.cat === cat);
+  const list = document.getElementById("mobileToolList");
+  list.innerHTML = tools.map(t => `
+    <a class="mobile-tool-item" href="${t.url}" target="_blank" rel="noopener noreferrer"
+       style="--card-accent-color:${meta.color};--card-accent-bg:${meta.color}15;">
+      <div class="mti-icon">${t.icon}</div>
+      <div class="mti-body">
+        <div class="mti-name">${t.name}</div>
+        <div class="mti-desc">${t.desc}</div>
+      </div>
+      <div class="mti-link">↗</div>
+    </a>
+  `).join("");
+  panel.scrollTop = 0;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ══════════════════════════════════════════════════════
+   DRAWER CATS (Mobile)
+══════════════════════════════════════════════════════ */
+function buildDrawerCats() {
+  const el = document.getElementById("drawerCats");
+  Object.entries(CAT_META).forEach(([cat, meta]) => {
+    const div = document.createElement("div");
+    div.className = "drawer-cat";
+    div.style.setProperty("--cat-color", meta.color);
+    div.innerHTML = `
+      <div style="font-size:20px">${meta.icon}</div>
+      <div class="drawer-cat-name">${cat}</div>
+      <div class="drawer-cat-count" style="color:${meta.color}">${CAT_COUNT[cat]||0} tools</div>
+    `;
+    div.onclick = () => {
+      closeDrawer();
+      showMobileCategory(cat, meta);
+    };
+    el.appendChild(div);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════════════ */
+document.getElementById("searchInput").addEventListener("input", e => {
+  searchQ = e.target.value;
+  renderGrid();
+});
+document.getElementById("mobileSearch").addEventListener("input", e => {
+  const q = e.target.value.toLowerCase();
+  const panel = document.getElementById("mobileToolsPanel");
+  const catGrid = document.getElementById("mobileCatGrid");
+  if (!q) { showMobileCats(); return; }
+  catGrid.style.display = "none";
+  panel.style.display = "block";
+  document.getElementById("panelCatTitle").innerHTML = `🔍 Search Results`;
+  const filtered = TOOLS.filter(t =>
+    [t.name,t.desc,t.cat,t.tags||""].some(s=>s.toLowerCase().includes(q))
+  );
+  document.getElementById("mobileToolList").innerHTML = filtered.length
+    ? filtered.map(t => {
+        const meta = CAT_META[t.cat]||{color:"#8b5cf6"};
+        return `<a class="mobile-tool-item" href="${t.url}" target="_blank" rel="noopener noreferrer"
+         style="--card-accent-color:${meta.color};--card-accent-bg:${meta.color}15;">
+          <div class="mti-icon">${t.icon}</div>
+          <div class="mti-body"><div class="mti-name">${t.name}</div><div class="mti-desc">${t.desc}</div></div>
+          <div class="mti-link">↗</div>
+        </a>`;
+      }).join("")
+    : `<div class="empty-state"><div class="e-icon">🔍</div><h3>No results</h3></div>`;
+});
+
+/* ══════════════════════════════════════════════════════
+   COMMAND BAR (⌘K)
+══════════════════════════════════════════════════════ */
+let cmdFocusIdx = -1;
+function openCmd() {
+  document.getElementById("cmdOverlay").classList.add("open");
+  setTimeout(() => document.getElementById("cmdInput").focus(), 50);
+  renderCmdResults("");
+}
+function closeCmd() { document.getElementById("cmdOverlay").classList.remove("open"); }
+function closeCmdOnOverlay(e) { if (e.target === document.getElementById("cmdOverlay")) closeCmd(); }
+
+document.getElementById("cmdInput").addEventListener("input", e => renderCmdResults(e.target.value));
+document.getElementById("cmdInput").addEventListener("keydown", e => {
+  const items = document.querySelectorAll(".cmd-item");
+  if (e.key === "ArrowDown") { cmdFocusIdx = Math.min(cmdFocusIdx+1, items.length-1); updateCmdFocus(items); e.preventDefault(); }
+  if (e.key === "ArrowUp")   { cmdFocusIdx = Math.max(cmdFocusIdx-1, 0); updateCmdFocus(items); e.preventDefault(); }
+  if (e.key === "Enter" && cmdFocusIdx >= 0) { items[cmdFocusIdx]?.click(); }
+  if (e.key === "Escape") closeCmd();
+});
+function updateCmdFocus(items) {
+  items.forEach((el,i) => el.classList.toggle("focused", i === cmdFocusIdx));
+  items[cmdFocusIdx]?.scrollIntoView({block:"nearest"});
+}
+function renderCmdResults(q) {
+  cmdFocusIdx = -1;
+  const res = document.getElementById("cmdResults");
+  const term = q.toLowerCase().trim();
+  const list = term
+    ? TOOLS.filter(t => [t.name,t.desc,t.cat,t.tags||""].some(s=>s.toLowerCase().includes(term))).slice(0,10)
+    : TOOLS.slice(0,10);
+  if (!list.length) { res.innerHTML = `<div class="cmd-empty">No tools found for "${q}"</div>`; return; }
+  res.innerHTML = list.map(t => {
+    const meta = CAT_META[t.cat]||{color:"#8b5cf6",icon:""};
+    return `<a class="cmd-item" href="${t.url}" target="_blank" rel="noopener noreferrer" onclick="closeCmd()">
+      <div class="cmd-item-icon">${t.icon}</div>
+      <div class="cmd-item-info">
+        <div class="cmd-item-name">${t.name}</div>
+        <div class="cmd-item-cat" style="color:${meta.color}">${meta.icon} ${t.cat}</div>
+      </div>
+      <span class="cmd-item-arrow">↗</span>
+    </a>`;
+  }).join("");
+}
+
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); openCmd(); }
+  if (e.key === "Escape") { closeCmd(); closeAuth(); }
+});
+
+/* ══════════════════════════════════════════════════════
+   HAMBURGER / DRAWER
+══════════════════════════════════════════════════════ */
+function toggleDrawer() {
+  document.getElementById("hamburger").classList.toggle("open");
+  document.getElementById("mobileDrawer").classList.toggle("open");
+}
+function closeDrawer() {
+  document.getElementById("hamburger").classList.remove("open");
+  document.getElementById("mobileDrawer").classList.remove("open");
+}
+
+/* ══════════════════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════════════════ */
+function openAuth(mode) {
+  authMode = mode;
+  document.getElementById("authOverlay").classList.add("open");
+  const isLogin = mode === "login";
+  document.getElementById("authTitle").textContent = isLogin ? "Welcome back" : "Create your account";
+  document.getElementById("authSub").textContent = isLogin ? "Sign in to save tools and personalize your feed" : "Join thousands discovering free AI tools";
+  document.getElementById("authBtnText").textContent = isLogin ? "Sign In →" : "Create Account →";
+  document.getElementById("authSwitch").innerHTML = isLogin
+    ? `Don't have an account? <a onclick="toggleAuthMode()">Sign up free</a>`
+    : `Already have an account? <a onclick="toggleAuthMode()">Log in</a>`;
+  document.getElementById("authPwdField").placeholder = isLogin ? "Password" : "Create a password";
+}
+function closeAuth() { document.getElementById("authOverlay").classList.remove("open"); }
+function closeAuthOnOverlay(e) { if (e.target===document.getElementById("authOverlay")) closeAuth(); }
+function toggleAuthMode() { openAuth(authMode === "login" ? "signup" : "login"); }
+function handleSocialAuth(provider) {
+  closeAuth();
+  showToast(`✓ Signed in with ${provider}`);
+}
+function handleEmailAuth() {
+  closeAuth();
+  showToast(authMode === "login" ? "✓ Logged in successfully" : "✓ Account created!");
+}
+
+/* ══════════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.createElement("div");
+  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+    background:#111118;border:1px solid rgba(0,245,212,.3);color:#00f5d4;
+    padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;
+    z-index:300;animation:fadeUp .3s ease;box-shadow:0 8px 30px rgba(0,0,0,.4);`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+/* ══════════════════════════════════════════════════════
+   SCROLL TOP
+══════════════════════════════════════════════════════ */
+window.addEventListener("scroll", () => {
+  document.getElementById("scrollTop").classList.toggle("show", scrollY > 500);
+});
+
+/* ══════════════════════════════════════════════════════
+   UTIL
+══════════════════════════════════════════════════════ */
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+/* ══════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════ */
+buildCatBar();
+buildDrawerCats();
+buildMobileCats();
+renderGrid();
+</script>
+</body>
+</html>
